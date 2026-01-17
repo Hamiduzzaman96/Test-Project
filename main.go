@@ -23,17 +23,17 @@ func createProducts(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Please provide valid post request", 400)
 	}
-	err := json.NewDecoder(r.Body).Decode(&newProduct)
+	err := json.NewDecoder(r.Body).Decode(&newProduct) //decode from json
 	if err != nil {
 		fmt.Println(err)
 		http.Error(w, "Plz provide valid json", 400)
 	}
 
-	newProduct.ID = len(productList) + 1
-	productList = append(productList, newProduct)
-	w.WriteHeader(201)
+	newProduct.ID = len(productList) + 1          // automatic generated id increasing by 1
+	productList = append(productList, newProduct) // append new product in product list
+	w.WriteHeader(201)                            // http server status for created
 
-	json.NewEncoder(w).Encode(newProduct)
+	json.NewEncoder(w).Encode(newProduct) // send client or frontend
 }
 
 type Products struct {
@@ -44,17 +44,15 @@ type Products struct {
 	ImageURL    string
 }
 
-var newProduct Products
+var newProduct Products // create a instance or object for products struct
 
 var productList []Products //empty slice
 
 func main() {
-	mux := http.NewServeMux() //Router
-
-	mux.HandleFunc("/products", getProducts) //Route
+	mux := http.NewServeMux()                          //Router
+	mux.HandleFunc("/create-products", createProducts) // Route
+	mux.HandleFunc("/products", getProducts)           //Route
 	fmt.Println("Server running on :8080")
-
-	mux.HandleFunc("/create-products", createProducts)
 
 	err := http.ListenAndServe(":8080", mux) //Start the server
 	if err != nil {
