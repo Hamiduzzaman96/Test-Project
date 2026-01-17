@@ -7,6 +7,9 @@ import (
 )
 
 func getProducts(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow_Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
+
 	if r.Method != "GET" {
 		http.Error(w, "Plz provide get request", 400)
 	}
