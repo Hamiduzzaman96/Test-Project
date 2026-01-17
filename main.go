@@ -7,13 +7,33 @@ import (
 )
 
 func getProducts(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow_Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 
 	if r.Method != "GET" {
 		http.Error(w, "Plz provide get request", 400)
 	}
 	json.NewEncoder(w).Encode(productList)
+}
+
+func createProducts(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
+
+	if r.Method != "POST" {
+		http.Error(w, "Please provide valid post request", 400)
+	}
+	err := json.NewDecoder(r.Body).Decode(&newProduct)
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "Plz provide valid json", 400)
+	}
+
+	newProduct.ID = len(productList) + 1
+	productList = append(productList, newProduct)
+	w.WriteHeader(201)
+
+	json.NewEncoder(w).Encode(newProduct)
 }
 
 type Products struct {
@@ -24,15 +44,19 @@ type Products struct {
 	ImageURL    string
 }
 
-var productList []Products
+var newProduct Products
+
+var productList []Products //empty slice
 
 func main() {
 	mux := http.NewServeMux() //Router
 
-	mux.HandleFunc("/products", getProducts)
+	mux.HandleFunc("/products", getProducts) //Route
 	fmt.Println("Server running on :8080")
 
-	err := http.ListenAndServe(":8080", mux)
+	mux.HandleFunc("/create-products", createProducts)
+
+	err := http.ListenAndServe(":8080", mux) //Start the server
 	if err != nil {
 		fmt.Println("Error starting the sever", err)
 	}
@@ -69,5 +93,5 @@ func init() {
 		ImageURL:    "https://stock.adobe.com/search?k=picture+of+banana",
 	}
 
-	productList = append(productList, prd1, prd2, prd3, prd4)
+	productList = append(productList, prd1, prd2, prd3, prd4) //empty slice a append kora hoyece
 }
