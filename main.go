@@ -3,16 +3,15 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/Hamiduzzaman96/Test-Project/handlers"
 )
 
-var newProduct Products // create a instance or object for products struct
-
-var productList []Products //empty slice
-
 func main() {
-	mux := http.NewServeMux()                                             //Router
-	mux.Handle("POST /create-products", http.HandlerFunc(createProducts)) // Route
-	mux.Handle("GET /products", http.HandlerFunc(getProducts))            //Route
+	mux := http.NewServeMux()                                                          //Router
+	mux.Handle("POST /products", http.HandlerFunc(handlers.CreateProducts))            // Route
+	mux.Handle("GET /products", http.HandlerFunc(handlers.GetProducts))                //Route
+	mux.Handle("GET /products/{productId}", http.HandlerFunc(handlers.GetProductbyID)) //Route
 	globalRouter(mux)
 	fmt.Println("Server running on :8080")
 

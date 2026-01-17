@@ -1,4 +1,16 @@
-package main
+package database
+
+type Products struct {
+	ID          int
+	Title       string
+	Description string
+	price       float64
+	ImageURL    string
+}
+
+var NewProduct Products // create a instance or object for products struct
+
+var ProductList []Products //empty slice
 
 func init() {
 	prd1 := Products{
@@ -30,5 +42,5 @@ func init() {
 		ImageURL:    "https://stock.adobe.com/search?k=picture+of+banana",
 	}
 
-	productList = append(productList, prd1, prd2, prd3, prd4) //empty slice a append kora hoyece
+	ProductList = append(ProductList, prd1, prd2, prd3, prd4) //empty slice a append kora hoyece
 }
