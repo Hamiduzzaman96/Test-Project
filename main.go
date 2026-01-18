@@ -3,21 +3,28 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
+	"strconv"
 
+	"github.com/Hamiduzzaman96/Test-Project/config"
 	"github.com/Hamiduzzaman96/Test-Project/handlers"
 )
 
 func main() {
+	cnf := config.GetConfig()
 	mux := http.NewServeMux()                                                          //Router
 	mux.Handle("POST /products", http.HandlerFunc(handlers.CreateProducts))            // Route
 	mux.Handle("GET /products", http.HandlerFunc(handlers.GetProducts))                //Route
 	mux.Handle("GET /products/{productId}", http.HandlerFunc(handlers.GetProductbyID)) //Route
 	globalRouter(mux)
-	fmt.Println("Server running on :8080")
 
-	err := http.ListenAndServe(":8080", mux) //Start the server
+	port := ":" + strconv.Itoa(cnf.HttpPort)
+	fmt.Println("Server running on port:", port)
+
+	err := http.ListenAndServe(port, mux) //Start the server
 	if err != nil {
-		fmt.Println("Error starting the sever", err)
+		fmt.Println("Error starting the server", err)
+		os.Exit(1)
 	}
 
 }
