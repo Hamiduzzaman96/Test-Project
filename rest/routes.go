@@ -11,11 +11,12 @@ import (
 )
 
 func GetRoutes(cnf config.Config) {
-	mux := http.NewServeMux()                                                          //Router
-	mux.Handle("POST /products", http.HandlerFunc(handlers.CreateProducts))            // Route
-	mux.Handle("GET /products", http.HandlerFunc(handlers.GetProducts))                //Route
-	mux.Handle("GET /products/{productId}", http.HandlerFunc(handlers.GetProductbyID)) //Route
-	mux.Handle("PUT /products/{productId}", http.HandlerFunc(handlers.UpdateProduct))  //Route
+	mux := http.NewServeMux()                                                            //Router
+	mux.Handle("POST /products", http.HandlerFunc(handlers.CreateProducts))              // Route
+	mux.Handle("GET /products", http.HandlerFunc(handlers.GetProducts))                  //Route
+	mux.Handle("GET /products/{productId}", http.HandlerFunc(handlers.GetProductbyID))   //Route
+	mux.Handle("PUT /products/{productId}", http.HandlerFunc(handlers.UpdateProduct))    //Route
+	mux.Handle("DELETE /products/{productId}", http.HandlerFunc(handlers.DeleteProduct)) //Route
 	globalRouter(mux)
 
 	port := ":" + strconv.Itoa(cnf.HttpPort)
