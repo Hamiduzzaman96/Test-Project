@@ -38,7 +38,7 @@ func Update(product Products) {
 }
 
 func Delete(productID int) {
-	var tempList []Products
+	var tempList []Products = make([]Products, 0)
 
 	for idx, p := range productList {
 		if p.ID != productID {
