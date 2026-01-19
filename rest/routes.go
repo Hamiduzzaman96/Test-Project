@@ -17,6 +17,8 @@ func GetRoutes(cnf config.Config) {
 	mux.Handle("GET /products/{productId}", http.HandlerFunc(handlers.GetProductbyID))   //Route
 	mux.Handle("PUT /products/{productId}", http.HandlerFunc(handlers.UpdateProduct))    //Route
 	mux.Handle("DELETE /products/{productId}", http.HandlerFunc(handlers.DeleteProduct)) //Route
+	mux.Handle("POST /users", http.HandlerFunc(handlers.CreateUser))                     //Route
+	mux.Handle("POST /users/login", http.HandlerFunc(handlers.Login))                    //Route
 	globalRouter(mux)
 
 	port := ":" + strconv.Itoa(cnf.HttpPort)
