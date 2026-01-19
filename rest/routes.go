@@ -15,6 +15,7 @@ func GetRoutes(cnf config.Config) {
 	mux.Handle("POST /products", http.HandlerFunc(handlers.CreateProducts))            // Route
 	mux.Handle("GET /products", http.HandlerFunc(handlers.GetProducts))                //Route
 	mux.Handle("GET /products/{productId}", http.HandlerFunc(handlers.GetProductbyID)) //Route
+	mux.Handle("PUT /products/{productId}", http.HandlerFunc(handlers.UpdateProduct))  //Route
 	globalRouter(mux)
 
 	port := ":" + strconv.Itoa(cnf.HttpPort)

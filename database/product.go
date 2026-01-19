@@ -8,9 +8,45 @@ type Products struct {
 	ImageURL    string
 }
 
-var NewProduct Products // create a instance or object for products struct
+var productList []Products //empty slice
 
-var ProductList []Products //empty slice
+func Store(p Products) Products {
+	p.ID = len(productList) + 1
+	productList = append(productList, p)
+	return p
+}
+
+func List() []Products {
+	return productList
+}
+
+func Get(productID int) *Products {
+	for _, product := range productList {
+		if product.ID == productID {
+			return &product
+		}
+	}
+	return nil
+}
+
+func Update(product Products) {
+	for idx, p := range productList {
+		if p.ID == product.ID {
+			productList[idx] = product
+		}
+	}
+}
+
+func Delete(productID int) {
+	var tempList []Products
+
+	for idx, p := range productList {
+		if p.ID != productID {
+			tempList[idx] = p
+		}
+	}
+	productList = tempList
+}
 
 func init() {
 	prd1 := Products{
@@ -42,5 +78,5 @@ func init() {
 		ImageURL:    "https://stock.adobe.com/search?k=picture+of+banana",
 	}
 
-	ProductList = append(ProductList, prd1, prd2, prd3, prd4) //empty slice a append kora hoyece
+	productList = append(productList, prd1, prd2, prd3, prd4) //empty slice a append kora hoyece
 }
