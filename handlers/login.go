@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/Hamiduzzaman96/Test-Project/config"
 	"github.com/Hamiduzzaman96/Test-Project/database"
 	"github.com/Hamiduzzaman96/Test-Project/util"
 )
@@ -27,6 +28,19 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid credentials", http.StatusBadRequest)
 	}
 
-	util.SendData(w, usr, http.StatusCreated)
+	cnf := config.GetConfig()
+
+	accessToken, err := util.CreateJwt(cnf.JwtSecretKey, util.Payload{
+		Sub:       usr.ID,
+		FirstName: usr.FirstName,
+		LastName:  usr.LastName,
+		Email:     usr.Email,
+	})
+
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
+
+	util.SendData(w, accessToken, http.StatusCreated)
 
 }
