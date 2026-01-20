@@ -32,11 +32,11 @@ func CreateJwt(secret string, data Payload) (string, error) {
 	}
 	headerB64 := base64UrlEncode(byteArrHeader)
 
-	byteArrData, err := json.Marshal(data)
+	byteArrPayload, err := json.Marshal(data)
 	if err != nil {
 		return "", err
 	}
-	payloadB64 := base64UrlEncode(byteArrData)
+	payloadB64 := base64UrlEncode(byteArrPayload)
 
 	byteArrSecret := []byte(secret)
 
